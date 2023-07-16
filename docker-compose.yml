@@ -1,0 +1,65 @@
+version: "1.0"
+
+services:
+  back:
+    build:
+      dockerfile: Dockerfile
+      context: ./back
+      target: development
+
+    volumes:
+      - ./back:/ilmir/src/app
+      - /ilmir/src/app/node_modules
+
+    command: npm run start:dev
+
+    depends_on:
+      - postgres
+
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: development
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 3000
+
+    ports:
+      - 3000:3000
+      - 9229:9229
+
+  front:
+    build:
+      dockerfile: Dockerfile
+      context: ./front
+      target: development
+
+    command: npm run start
+
+    volumes:
+      - ./front:/ilmir/front/src/app
+      - /ilmir/front/src/app/node_modules
+
+    ports:
+      - 4200:4200
+
+    links:
+      - back
+
+  postgres:
+    image: postgres:10.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+    ports:
+      - 35000:5432
+
+  postgres_admin:
+    image: dpage/pgadmin4:4.28
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - 5050:80
