@@ -3,5 +3,9 @@ export interface UserI {
   username?: string;
   phone?: string;
   email?: string;
+  country?: string;
+  city?: string;
+  gender?: string;
+  surname?: string;
   password?: string;
 }

@@ -20,6 +20,18 @@ module.exports = {
         type: DataTypes.STRING,
         unique: true,
       },
+      country: {
+        type: DataTypes.STRING,
+      },
+      city: {
+        type: DataTypes.STRING,
+      },
+      gender: {
+        type: DataTypes.STRING,
+      },
+      surname: {
+        type: DataTypes.STRING,
+      },
       password: {
         allowNull: false,
         type: DataTypes.STRING,
